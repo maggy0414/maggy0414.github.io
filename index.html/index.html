@@ -39,6 +39,7 @@
     border-radius: 10px;
   }
 </style>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 </head>
 <body>
 
@@ -154,6 +155,24 @@ function showResult() {
 
 // 初始化
 showQuestion();
+</script>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    function goFullscreen() {
+        let elem = document.documentElement;
+        if (elem.requestFullscreen) {
+            elem.requestFullscreen();
+        } else if (elem.mozRequestFullScreen) { // Firefox
+            elem.mozRequestFullScreen();
+        } else if (elem.webkitRequestFullscreen) { // Chrome, Safari
+            elem.webkitRequestFullscreen();
+        } else if (elem.msRequestFullscreen) { // IE/Edge
+            elem.msRequestFullscreen();
+        }
+    }
+    goFullscreen();
+});
 </script>
 
 </body>
