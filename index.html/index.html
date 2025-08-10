@@ -1,64 +1,160 @@
 <!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>我的功德銀行</title>
-  <style>
-    body {
-      margin: 0;
-      font-family: 'Microsoft JhengHei', sans-serif;
-      background: linear-gradient(135deg, #87cefa, #ffe066);
-      color: #333;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      text-align: center;
-      min-height: 100vh;
-      padding: 0;
-    }
-    header {
-      padding: 20px;
-    }
-    img.cover {
-      max-width: 90%;
-      height: auto;
-      border-radius: 12px;
-      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
-    }
-    h1 {
-      margin-top: 20px;
-      font-size: 2.5rem;
-      color: #2c3e50;
-    }
-    p.subtitle {
-      max-width: 700px;
-      font-size: 1.2rem;
-      color: #444;
-      margin: 10px auto 30px auto;
-      line-height: 1.6;
-    }
-    a.button {
-      display: inline-block;
-      padding: 12px 24px;
-      font-size: 1.2rem;
-      color: white;
-      background: #ff7f50;
-      border-radius: 8px;
-      text-decoration: none;
-      transition: background 0.3s;
-    }
-    a.button:hover {
-      background: #e06b3b;
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>我的功德簿</title>
+<style>
+  body {
+    font-family: "Microsoft JhengHei", sans-serif;
+    background-color: #faf5f0;
+    text-align: center;
+    padding: 20px;
+  }
+  #game, #result {
+    max-width: 500px;
+    margin: auto;
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  }
+  button {
+    display: block;
+    width: 100%;
+    margin: 8px 0;
+    padding: 10px;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 8px;
+    border: none;
+    background-color: #e6d4c3;
+    transition: background 0.3s;
+  }
+  button:hover {
+    background-color: #d1bfae;
+  }
+  img {
+    max-width: 100%;
+    border-radius: 10px;
+  }
+</style>
 </head>
 <body>
-  <header>
-    <img src="聖凡.png" alt="遊戲封面" class="cover">
-    <h1>我的功德銀行</h1>
-    <p class="subtitle">人生岔路口的每個選擇，將帶我們到達不同的未來。所以...請好好做選擇吧!</p>
-    <a href="game.html" class="button">開始遊戲</a>
-  </header>
+
+<h1>因為每個抉擇，所以最終達到的結果是...</h1>
+
+<div id="game">
+  <h2 id="question"></h2>
+  <div id="options"></div>
+</div>
+
+<div id="result" style="display:none;">
+  <h2 id="result-title"></h2>
+  <img id="result-image" src="" alt="結果圖片">
+  <p id="result-desc"></p>
+</div>
+
+<script>
+const questions = [
+  {
+    text: "新民班課表出來了，我會偏向如何安排時間？",
+    options: [
+      { text: "參加新民班可以更了解道場和人生，我會盡可能排出時間參加", saint: 18, mortal: 2 },
+      { text: "平均分配時間，以不耽誤個人家庭、學業、事業上盡可能配合參加", saint: 10, mortal: 10 },
+      { text: "不太想去，但感覺還不錯，大家也都很好，所以有空就去", saint: 3, mortal: 17 },
+      { text: "晚上是自己的時間，新民班有想到再去就好", saint: 0, mortal: 20 }
+    ]
+  },
+  {
+    text: "哇!好幸運刮中一萬，你想怎麼使用？",
+    options: [
+      { text: "一部分給家人，跟他們分享中獎喜悅，剩下的一些存起來，其他拿去捐", saint: 18, mortal: 2 },
+      { text: "一些存起來，一些拿去投資看看，剩下的再拿去買想買很久的書", saint: 10, mortal: 10 },
+      { text: "好ㄟ，今天我中獎，朋友跟我吃飯都我請客", saint: 3, mortal: 17 },
+      { text: "全部拿去買喜歡的遊戲、衣服，再吃一頓好的", saint: 0, mortal: 20 }
+    ]
+  },
+  {
+    text: "伙食團的學長姐或道場的講師邀請我周末去做法會志工，但是我周末有朋友聚會時？",
+    options: [
+      { text: "雖然爽約有點不好意思，但我會努力與朋友溝通，因為我想去道場付出和學習!", saint: 18, mortal: 2 },
+      { text: "先試著跟朋友調整時間看看，如果可以兩邊都顧好就去法會", saint: 10, mortal: 10 },
+      { text: "不太想去，但去法會是去做功德，還是去好了", saint: 3, mortal: 17 },
+      { text: "法會沒有我的個人事務重要，不去", saint: 0, mortal: 20 }
+    ]
+  },
+  {
+    text: "對於那些經典內容，或是每日持經的人，你的想法是？",
+    options: [
+      { text: "科學的盡頭是玄學，每日持經是想要維持身心平靜", saint: 18, mortal: 2 },
+      { text: "經典內容就像人生攻略，很有價值，但每天持經或許有些過於迷信", saint: 10, mortal: 10 },
+      { text: "那些深奧的東西我不懂，感覺平常也用不到，每日持經?是有那種人，我尊重他們的信仰", saint: 3, mortal: 17 },
+      { text: "科學跟AI才是現今社會大潮流，那些經典也是舊時代的事情了", saint: 0, mortal: 20 }
+    ]
+  },
+  {
+    text: "朋友詢問一貫道在做甚麼，我可能的反應？",
+    options: [
+      { text: "開心並客觀的與他人分享伙食團以及道場", saint: 18, mortal: 2 },
+      { text: "內心想起道場的好，但不確定對方接受度，所以看看情況做分享", saint: 10, mortal: 10 },
+      { text: "話題太敏感了，先岔開話題呼嚨過去", saint: 3, mortal: 17 },
+      { text: "完全不敢說自己有認識一貫道的道親，怕被當怪人", saint: 0, mortal: 20 }
+    ]
+  }
+];
+
+let currentQuestion = 0;
+let saintScore = 0;
+let mortalScore = 0;
+
+function showQuestion() {
+  const q = questions[currentQuestion];
+  document.getElementById("question").innerText = q.text;
+  const optionsDiv = document.getElementById("options");
+  optionsDiv.innerHTML = "";
+  q.options.forEach(opt => {
+    const btn = document.createElement("button");
+    btn.innerText = opt.text;
+    btn.onclick = () => chooseOption(opt);
+    optionsDiv.appendChild(btn);
+  });
+}
+
+function chooseOption(option) {
+  saintScore += option.saint;
+  mortalScore += option.mortal;
+  currentQuestion++;
+  if (currentQuestion < questions.length) {
+    showQuestion();
+  } else {
+    showResult();
+  }
+}
+
+function showResult() {
+  document.getElementById("game").style.display = "none";
+  document.getElementById("result").style.display = "block";
+  
+  let resultData;
+  if (saintScore >= 71) {
+    resultData = { title: "#重聖輕凡", image: "img1.jpg", desc: "恭喜你~成聖成賢，指日可待。" };
+  } else if (saintScore >= 50) {
+    resultData = { title: "#聖凡並進", image: "img2.jpg", desc: "你在聖凡之間取得了平衡，十分不容易。是難得的人才~" };
+  } else if (saintScore >= 10) {
+    resultData = { title: "#重凡輕聖", image: "img3.jpg", desc: "要多回來佛堂阿!你的功德庫裡有點空阿。" };
+  } else {
+    resultData = { title: "#凡業很重", image: "img4.jpg", desc: "你花光了你功德庫中所有積蓄，為師甚是擔心。" };
+  }
+  
+  document.getElementById("result-title").innerText = resultData.title;
+  document.getElementById("result-image").src = resultData.image;
+  document.getElementById("result-desc").innerText = resultData.desc;
+}
+
+// 初始化
+showQuestion();
+</script>
+
 </body>
 </html>
