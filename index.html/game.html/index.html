@@ -140,11 +140,11 @@ function showResult() {
   if (saintScore >= 71) {
     resultData = { title: "#重聖輕凡", image: "img1.jpg", desc: "恭喜你~成聖成賢，指日可待。" };
   } else if (saintScore >= 50) {
-    resultData = { title: "#聖凡如意", image: "img2.jpg", desc: "你在聖凡之間取得了平衡，十分不容易。是難得的人才~" };
+    resultData = { title: "#聖凡並進", image: "img2.jpg", desc: "你在聖凡之間取得了平衡，十分不容易。是難得的人才~" };
   } else if (saintScore >= 10) {
     resultData = { title: "#重凡輕聖", image: "img3.jpg", desc: "要多回來佛堂阿!你的功德庫裡有點空阿。" };
   } else {
-    resultData = { title: "#全凡無聖", image: "img4.jpg", desc: "你花光了你功德庫中所有積蓄，為師甚是擔心。" };
+    resultData = { title: "#凡業很重", image: "img4.jpg", desc: "你花光了你功德庫中所有積蓄，為師甚是擔心。" };
   }
   
   document.getElementById("result-title").innerText = resultData.title;
